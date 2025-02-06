@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* Buttons */
+  .f-btn {
+    @apply py-1.5 px-4 rounded-lg font-medium transition-colors duration-200 cursor-pointer select-none active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed border-2;
+  }
+  .f-btn-primary {
+    @apply text-white bg-primary border-primary hover:bg-primary-dark;
+  }
+  .f-btn-primary-outline {
+    @apply border-primary text-primary hover:bg-primary hover:text-white;
+  }
+  .f-btn-success {
+    @apply text-white bg-success border-success hover:bg-success-dark;
+  }
+  .f-btn-success-outline {
+    @apply border-success text-success hover:bg-success hover:text-white;
+  }
+  .f-btn-danger {
+    @apply text-white bg-danger border-danger hover:bg-danger-dark;
+  }
+  .f-btn-danger-outline {
+    @apply border-danger text-danger hover:bg-danger hover:text-white;
+  }
+
+  /* Input */
+
+  .f-input {
+    @apply w-full transition duration-150 ease-in-out focus:outline-none px-3 py-1.5 rounded-md border focus:ring focus:ring-opacity-50;
+  }
+  .f-input-form {
+    @apply bg-white border-gray-300 focus:border-primary focus:ring-primary-300;
+  }
+  .f-input-underline {
+    @apply px-2 bg-transparent border-b border-gray-400 focus:border-primary;
+  }
+  .f-input-outline {
+    @apply bg-white border-2 border-gray-400 focus:border-primary;
+  }
+  .f-input-error {
+    @apply border-danger focus:border-danger focus:ring-danger;
+  }
+  .f-input-disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
