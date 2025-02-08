@@ -1,29 +1,42 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("@/assets/css/timePicker.css");
+@layer tailwind-base, primereact, tailwind-utilities;
+@layer tailwind-base {
+  @tailwind base;
+}
 
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
 @layer components {
   /* Buttons */
   .f-btn {
     @apply py-1.5 px-4 rounded-lg font-medium transition-colors duration-200 cursor-pointer select-none active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed border-2;
   }
+
   .f-btn-primary {
-    @apply text-white bg-primary border-primary hover:bg-primary-dark;
+    @apply text-white bg-primary border-primary hover:bg-primary-900;
   }
   .f-btn-primary-outline {
     @apply border-primary text-primary hover:bg-primary hover:text-white;
   }
   .f-btn-success {
-    @apply text-white bg-success border-success hover:bg-success-dark;
+    @apply text-white bg-primary border-success;
   }
   .f-btn-success-outline {
     @apply border-success text-success hover:bg-success hover:text-white;
   }
   .f-btn-danger {
-    @apply text-white bg-danger border-danger hover:bg-danger-dark;
+    @apply text-white bg-danger border-danger;
   }
   .f-btn-danger-outline {
     @apply border-danger text-danger hover:bg-danger hover:text-white;
+  }
+  .f-btn-gray {
+    @apply text-black bg-gray-300 border-gray-300;
+  }
+  .f-btn-gray-outline {
+    @apply text-gray-300 border-gray-300 hover:bg-gray-300 hover:text-black;
   }
 
   /* Input */
@@ -45,5 +58,9 @@
   }
   .f-input-disabled {
     @apply opacity-50 cursor-not-allowed;
+  }
+
+  .slot-container {
+    @apply border relative pe-1.5 border-primary rounded-md flex items-center gap-1 ps-2 py-1 [&>:first-child]:after:content-['-'];
   }
 }

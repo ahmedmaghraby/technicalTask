@@ -5,6 +5,7 @@ import Components from "unplugin-vue-components/vite";
 import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
 import AutoImport from "unplugin-auto-import/vite";
+import tailwindcss from "tailwindcss";
 
 const config = defineConfig({
   resolve: {
@@ -33,14 +34,19 @@ const config = defineConfig({
       dts: "src/auto-imports.d.ts",
     }),
   ],
-
+  css: {
+    postcss: {
+      plugins: [tailwindcss()],
+    },
+  },
   server: {
     port: 4200,
     proxy: {
-      "/api": {
-        target: "https://api.foodics.dev/v5/",
+      "/v5": {
+        target: "https://api.foodics.dev",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        secure: false,
+        ws: true,
       },
     },
   },
