@@ -5,7 +5,7 @@ import apiClient from "@/utils/api";
 export const fetchBranches = async (): Promise<ApiResponse<Branch[]>> => {
   try {
     const response = await apiClient.get(
-      `/branches?include[0]=sections&include[1]=sections.tables`
+      `/api/v5/branches?include[0]=sections&include[1]=sections.tables`
     );
     return response.data;
   } catch (error) {
@@ -19,7 +19,7 @@ export const updateBranchReservations = async (
   id: string
 ): Promise<ApiResponse<Branch>> => {
   try {
-    const response = await apiClient.put(`/branches/${id}`, updatedData);
+    const response = await apiClient.put(`/api/v5/branches/${id}`, updatedData);
     return response.data;
   } catch (error) {
     console.error("Error updating branch reservations:", error);

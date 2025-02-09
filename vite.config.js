@@ -42,11 +42,10 @@ const config = defineConfig({
   server: {
     port: 4200,
     proxy: {
-      "/v5": {
-        target: "https://api.foodics.dev",
+      "/api": {
+        target: "https://api.foodics.dev", // Foodics API base URL
         changeOrigin: true,
-        secure: false,
-        ws: true,
+        rewrite: (path) => path.replace(/^\/api/, ""), // Remove `/api` prefix
       },
     },
   },
