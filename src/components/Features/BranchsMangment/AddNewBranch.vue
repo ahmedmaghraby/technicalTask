@@ -80,6 +80,7 @@ const activateSelectedBranches = async () => {
             }
         }
     } catch (error) {
+        
         console.error(error);
     } finally {
         isModalOpen.value = false;
