@@ -5,19 +5,21 @@
                 :toastMsg="`Branch working hours are ${selectedBranch?.opening_from} - ${selectedBranch?.opening_to}`"
                 :toastType="'info'" :show-close-btn="false" />
             <div class="flex flex-col gap-3 px-2 pt-4 overflow-y-auto max-h-96">
+                <FToast v-if="generalError" :toastMsg="generalError" :toastType="'error'" :show-close-btn="false" />
                 <FInput v-model="editableBranchObject.reservation_duration" :required="true"
-                    label="Reservation Duration (minutes)" type="number" :error-message="editableBranchObject.reservation_duration ? '' : 'This field is required'" />
+                    label="Reservation Duration (minutes)" type="number"
+                    :error-message="editableBranchObject.reservation_duration ? '' : 'This field is required'" />
 
-                <FSelect v-model="selectedTables" :options="tables" label="Select Tables"
-                    selectKey="id" :error-message="selectedTables ? '' : 'This field is required'"
+                <FSelect v-model="selectedTables" :options="tables" label="Select Tables" selectKey="id"
+                    :error-message="selectedTables.length > 0 ? '' : 'This field is required'"
                     searchKey="composite_name" multiselect>
                     <template #select-labels>
                         <div v-if="selectedTables.length" class="overflow-y-auto max-h-28">
                             <span v-for="(option, index) in selectedTables" :key="index"
-                                class="inline-flex items-center gap-1 px-2 py-1 mr-1 text-sm font-medium leading-none border rounded-lg text-primary border-primary">
+                                class="inline-flex items-center gap-1 px-2 py-1 mr-1 text-sm font-medium leading-none border rounded-lg text-primary dark:text-white border-primary dark:border-white">
                                 {{ option.composite_name }}
                                 <div @click.stop="selectedTables.splice(index, 1)" class="">
-                                    <EpCloseBold class="w-3 h-3 text-primary hover:text-gray-400" />
+                                    <EpCloseBold class="w-3 h-3 text-primary dark:text-white hover:text-gray-400" />
                                 </div>
                             </span>
                         </div>
@@ -31,9 +33,13 @@
                 <div class="flex flex-col gap-2">
                     <div class="flex flex-col gap-1" v-for="(day, index) in sortedReservationTimes"
                         :key="index + day.dayName">
-                        <span class="flex items-center justify-between text-sm font-medium text-slate-800 dark:text-white">{{ day.dayName }} <span class="cursor-pointer text-primary" @click="ApplyOnAllDays" v-if="index==0">Apply on all days</span>
-                    </span>
-                        <FTimeSlot :value="day.times" @input="handleTimeSlotChange" :required="true" />
+                        <span
+                            class="flex items-center justify-between text-sm font-medium text-slate-800 dark:text-white">{{
+                                day.dayName }} <span class="cursor-pointer text-primary dark:text-primary-200"
+                                @click="ApplyOnAllDays" v-if="index == 0">Apply on
+                                all days</span>
+                        </span>
+                        <FTimeSlot :value="day.times" :placeholder="`Add Available Reservation Times`" @input="handleTimeSlotChange" :required="true" />
                     </div>
                 </div>
             </div>
@@ -53,6 +59,7 @@ const branchStore = useBranchStore();
 const isLoading = ref(false);
 const editableBranchObject = ref<Branch>({});
 const selectedTables = ref<TableTempDisplay[]>([]);
+
 const emit = defineEmits(["updateModalState"]);
 const props = defineProps({
     isModalOpen: {
@@ -81,18 +88,33 @@ const tables = computed(() => {
     }, [] as TableTempDisplay[]);
 })
 const sortedReservationTimes = computed(() => {
-    if (props?.selectedBranch?.reservation_times) {
-        return dayOrder
-            .filter(day => props.selectedBranch?.reservation_times?.[day])
-            .map(day => ({
-                dayName: day,
-                times: props.selectedBranch?.reservation_times?.[day] ?? []
-            }));
+    return dayOrder
+        .map(day => ({
+            dayName: day,
+            times: props.selectedBranch?.reservation_times?.[day] ?? []
+        }));
+
+})
+const generalError = computed(() => {
+    if (!editableBranchObject.value?.reservation_duration) {
+        return 'reservation duration is required';
+    } else if (selectedTables.value.length === 0) {
+        return 'reservation tables is required';
     } else {
-        return [];
+        return '';
     }
 })
-
+const modalActions = computed<ModalActions[]>(() => {
+    return [
+    { label: "Cancel", type: "gray", closeOnClick: true },
+    {
+        label: "Activate", type: "primary", isLoading: isLoading.value,
+        isDisabled: isLoading.value || generalError.value !== '',
+        onClick: () => {
+            updateBranchSettings();
+        }
+    },
+]});
 onMounted(() => {
     if (props?.selectedBranch) {
         editableBranchObject.value = Object.assign({}, props?.selectedBranch);
@@ -113,15 +135,7 @@ watch(props?.selectedBranch, () => {
     }
 })
 
-const modalActions = ref<ModalActions[]>([
-    { label: "Cancel", type: "gray", closeOnClick: true },
-    {
-        label: "Activate", type: "primary", isLoading: isLoading.value,
-        onClick: () => {
-             updateBranchSettings();
-        }
-    },
-]);
+
 
 const handleTimeSlotChange = (times: string[][], day: string) => {
     if (editableBranchObject.value.reservation_times) {
@@ -129,38 +143,38 @@ const handleTimeSlotChange = (times: string[][], day: string) => {
     }
 }
 
-const ApplyOnAllDays= () =>{
- if (editableBranchObject.value.reservation_times && editableBranchObject.value.reservation_times.saturday) {
-          const saturdayTimes = editableBranchObject.value.reservation_times.saturday;
-          for (let index = 1; index < dayOrder.length; index++) {
+const ApplyOnAllDays = () => {
+    if (editableBranchObject.value.reservation_times && editableBranchObject.value.reservation_times.saturday) {
+        const saturdayTimes = editableBranchObject.value.reservation_times.saturday;
+        for (let index = 1; index < dayOrder.length; index++) {
             const day = dayOrder[index];
             editableBranchObject.value.reservation_times[day] = [...saturdayTimes];
-          }
+        }
     }
 }
 
 const updateBranchSettings = async () => {
-  try {
-    isLoading.value = true;
-    if (editableBranchObject?.value?.id) {
-      branchStore.setFetchLoading(true);
-      branchStore.updateBranchResrvationAcceptanceStatus
-      const res = await updateBranchReservations({
-        "reservation_duration": editableBranchObject?.value?.reservation_duration,
-        "reservation_times": editableBranchObject?.value?.reservation_times
-      }, editableBranchObject?.value?.id);
-      if (res.data.id === editableBranchObject?.value?.id) {
-        branchStore.updateFullBranchSettings(editableBranchObject?.value?.id, editableBranchObject?.value);
-      }
+    try {
+        isLoading.value = true;
+        if (editableBranchObject?.value?.id) {
+            branchStore.setFetchLoading(true);
+            branchStore.updateBranchResrvationAcceptanceStatus
+            const res = await updateBranchReservations({
+                "reservation_duration": editableBranchObject?.value?.reservation_duration,
+                "reservation_times": editableBranchObject?.value?.reservation_times
+            }, editableBranchObject?.value?.id);
+            if (res.data.id === editableBranchObject?.value?.id) {
+                branchStore.updateFullBranchSettings(editableBranchObject?.value?.id, editableBranchObject?.value);
+            }
+        }
+    } catch (error) {
+        console.error(error);
+    } finally {
+        branchStore.setFetchLoading(false);
+        localIsModalOpen.value = false;
+        selectedTables.value = [];
+        editableBranchObject.value = {};
+        isLoading.value = false;
     }
-  } catch (error) {
-    console.error(error);
-  } finally {
-      branchStore.setFetchLoading(false);
-      localIsModalOpen.value = false;
-      selectedTables.value = [];
-      editableBranchObject.value = {};
-      isLoading.value = false;
-  }
 };
 </script>

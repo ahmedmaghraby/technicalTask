@@ -8,14 +8,21 @@
 
     <div class="flex items-center justify-between gap-1 p-2 border rounded-lg cursor-pointer select-none">
       <div class="flex-grow flex flex-wrap gap-1 w-[calc(100%-40px)]">
-        <div v-for="(yourTimeValue, index) in selectedTimeSlots" class="slot-container" :key="index">
-          <vue-timepicker v-for="(time, key) in yourTimeValue" :key="key" format="HH:mm" lazy manual-input
-            hide-clear-button hide-dropdown auto-scroll :value="time" @change="(e)=>slotSelected(e, index, key)">
-          </vue-timepicker>
-          <div class="absolute top-0 -right-0.5 translate-x-0.5 -translate-y-1.5 hover:scale-110" @click="removeSlot(index)">
-            <ZondiconsCloseSolid class="text-primary dark:text-white" />
+        <template v-if="selectedTimeSlots.length > 0">
+          <div v-for="(yourTimeValue, index) in selectedTimeSlots"  class="slot-container" :key="index">
+            <vue-timepicker v-for="(time, key) in yourTimeValue" :key="key" format="HH:mm" lazy manual-input
+              hide-clear-button hide-dropdown auto-scroll :value="time" @change="(e)=>slotSelected(e, index, key)">
+            </vue-timepicker>
+            <div class="absolute top-0 -right-0.5 translate-x-0.5 -translate-y-1.5 hover:scale-110" @click="removeSlot(index)">
+              <ZondiconsCloseSolid class="text-primary dark:text-white" />
+            </div>
           </div>
-        </div>
+        </template>
+        <template v-else>
+          <p class="text-gray-500 opacity-50 dark:text-gray-200">
+            {{ placeholder ?? "Select your Time Slots" }}
+          </p>
+        </template>
       </div>
       <div class="flex items-center justify-center flex-shrink-0 w-8" @click="addSlot">
         <IconParkOutlineAdd class="text-primary dark:text-white" />
@@ -40,6 +47,7 @@ export default {
     label: { type: String, default: "" },
     errorMessage: { type: String, default: "" },
     required: { type: Boolean, default: false },
+    placeholder: { type: String, default: "" },
   },
   data() {
     return {

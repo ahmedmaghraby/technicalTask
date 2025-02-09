@@ -22,6 +22,7 @@
 }
 .dark .vue__time-picker input.display-time {
   color: #fff;
+  background-color: rgb(31, 41, 55);
 }
 .vue__time-picker input.display-time:focus {
   border: 0;
