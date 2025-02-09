@@ -35,8 +35,6 @@ export const useBranchStore = defineStore("branches", {
       }
     },
     updateBranchResrvationAcceptanceStatus(id: string, status: boolean) {
-      console.log("---------------", status);
-
       let index = this.branches.findIndex((branch) => branch.id === id);
       if (index !== -1) {
         this.branches[index].accepts_reservations = status;
