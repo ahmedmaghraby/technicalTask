@@ -169,7 +169,7 @@ const updateBranchSettings = async () => {
     } catch (error) {
         console.error(error);
     } finally {
-        branchStore.setFetchLoading(false);
+        branchStore.fetchBranches();
         localIsModalOpen.value = false;
         selectedTables.value = [];
         editableBranchObject.value = {};

@@ -27,6 +27,7 @@ declare module 'vue' {
     Hero: typeof import('./components/Hero.vue')['default']
     IconParkOutlineAdd: typeof import('~icons/icon-park-outline/add')['default']
     Label: typeof import('~icons/la/bel')['default']
+    LucideEdit: typeof import('~icons/lucide/edit')['default']
     MdiMoonWaningCrescent: typeof import('~icons/mdi/moon-waning-crescent')['default']
     MdiWhiteBalanceSunny: typeof import('~icons/mdi/white-balance-sunny')['default']
     Navbar: typeof import('./components/Layout/Navbar.vue')['default']

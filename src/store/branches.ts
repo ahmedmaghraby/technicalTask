@@ -26,6 +26,7 @@ export const useBranchStore = defineStore("branches", {
     async fetchBranches() {
       this.fetchLoading = true;
       try {
+        this.branches = [];
         const response = await fetchBranches();
         this.branches = response.data;
       } catch (error) {

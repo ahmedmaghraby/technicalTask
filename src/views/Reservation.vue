@@ -20,8 +20,14 @@
           <span class="text-gray-700 dark:text-white">{{ row.reservation_duration }} Minutes</span>
         </template>
         <template #actions="{ row }">
-          <div class="flex items-center justify-center w-full gap-2 transition duration-500 transform hover:scale-110 hover:translate-x-0.5" @click.stop="deactivateSelectedBranches(row)">
-            <FluentMdl2DeactivateOrders  class="w-6 h-6 cursor-pointer text-danger"/>
+          <div class="flex items-center justify-center w-full gap-2">
+            <div class=" transition duration-500 transform hover:scale-110 hover:translate-x-0.5" @click.stop="openEditDialog(row)">
+              <LucideEdit  class="w-6 h-6 cursor-pointer text-info"/>
+            </div>
+            <div class="transition duration-500 transform hover:scale-110 hover:translate-x-0.5" @click.stop="deactivateSelectedBranches(row)">
+              <FluentMdl2DeactivateOrders  class="w-6 h-6 cursor-pointer text-danger"/>
+            </div>
+
           </div>
         </template>
       </FTable>
