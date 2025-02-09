@@ -15,10 +15,10 @@
   }
 
   .f-btn-primary {
-    @apply text-white bg-primary border-primary hover:bg-primary-900;
+    @apply text-white bg-primary border-primary hover:bg-primary-900 dark:border-primary-300 dark:bg-primary-300 dark:text-gray-800 dark:hover:bg-primary-400;
   }
   .f-btn-primary-outline {
-    @apply border-primary text-primary hover:bg-primary hover:text-white;
+    @apply border-primary text-primary hover:bg-primary hover:text-white dark:border-primary-300 dark:text-primary-300 dark:hover:bg-primary-300 dark:hover:text-gray-800;
   }
   .f-btn-success {
     @apply text-white bg-primary border-success;
