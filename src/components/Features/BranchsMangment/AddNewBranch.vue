@@ -12,10 +12,10 @@
                         <div v-if="selectedBranches.length" class="overflow-y-auto max-h-28">
                             <span v-for="(option, index) in selectedBranches"
                                  :key="index"
-                                class="inline-flex items-center gap-1 px-2 py-1 mr-1 text-sm font-medium leading-none border rounded-lg text-primary border-primary">
+                                class="inline-flex items-center gap-1 px-2 py-1 mr-1 text-sm font-medium leading-none border rounded-lg text-primary dark:text-white border-primary dark:border-white">
                                 {{ option.name }}
                                 <div @click.stop="selectedBranches.splice(index, 1)" class="">
-                                    <EpCloseBold  class="w-3 h-3 text-primary hover:text-gray-400" />
+                                    <EpCloseBold  class="w-3 h-3 text-primary dark:text-white hover:text-gray-400" />
                                 </div>
                             </span>
                         </div>
