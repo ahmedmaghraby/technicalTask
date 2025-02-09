@@ -137,7 +137,8 @@ watch(props?.selectedBranch, () => {
 
 
 const handleTimeSlotChange = (times: string[][], day: string) => {
-    if (editableBranchObject.value.reservation_times) {
+
+    if (editableBranchObject.value.reservation_times && editableBranchObject.value.reservation_times[day]) {
         editableBranchObject.value.reservation_times[day] = times;
     }
 }
