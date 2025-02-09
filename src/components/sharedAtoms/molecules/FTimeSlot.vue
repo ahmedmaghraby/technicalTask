@@ -64,7 +64,7 @@ export default {
       if (this.selectedTimeSlots.length < 3) {
         this.selectedTimeSlots.push(["", ""]);
       } else {
-        this.localErrorMessage = "You cannot add more than 2 slots";
+        this.localErrorMessage = "You cannot add more than 3 slots";
       }
     },
     removeSlot(index) {

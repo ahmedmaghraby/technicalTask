@@ -5,7 +5,6 @@
                 :toastMsg="`Branch working hours are ${selectedBranch?.opening_from} - ${selectedBranch?.opening_to}`"
                 :toastType="'info'" :show-close-btn="false" />
             <div class="flex flex-col gap-3 px-2 pt-4 overflow-y-auto max-h-96">
-                <FToast v-if="generalError" :toastMsg="generalError" :toastType="'error'" :show-close-btn="false" />
                 <FInput v-model="editableBranchObject.reservation_duration" :required="true"
                     label="Reservation Duration (minutes)" type="number"
                     :error-message="editableBranchObject.reservation_duration ? '' : 'This field is required'" />
