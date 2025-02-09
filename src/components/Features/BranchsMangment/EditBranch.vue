@@ -107,7 +107,7 @@ const modalActions = computed<ModalActions[]>(() => {
     return [
     { label: "Cancel", type: "gray", closeOnClick: true },
     {
-        label: "Activate", type: "primary", isLoading: isLoading.value,
+        label: "Update", type: "primary", isLoading: isLoading.value,
         isDisabled: isLoading.value || generalError.value !== '',
         onClick: () => {
             updateBranchSettings();
